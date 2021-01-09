@@ -1,4 +1,4 @@
-exports.scm_root = {
+exports.sr_root = {
     host: 'localhost',
     port: 3306,
     user: 'root',
@@ -6,7 +6,7 @@ exports.scm_root = {
     db: 'sr_enterprises'
 }
 
-exports.scm_public = {
+exports.sr_public = {
     host: 'localhost',
     port: 3306,
     user: 'root',

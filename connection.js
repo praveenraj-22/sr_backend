@@ -4,11 +4,11 @@ const cred=require('./cred')
 
 
 exports.sr_root = mysql.createPool({
-    host: cred.scm_root.host,
-    user: cred.scm_root.user,
-    password: cred.scm_root.pass,
-    database: cred.scm_root.db,
-    port: cred.scm_root.port,
+    host: cred.sr_root.host,
+    user: cred.sr_root.user,
+    password: cred.sr_root.pass,
+    database: cred.sr_root.db,
+    port: cred.sr_root.port,
     dateStrings: true,
     insecureAuth: true,
     multipleStatements: true,
@@ -18,11 +18,11 @@ exports.sr_root = mysql.createPool({
 })
 
 exports.sr_public = mysql.createPool({
-    host: cred.scm_public.host,
-    user: cred.scm_public.user,
-    password: cred.scm_public.pass,
-    database: cred.scm_public.db,
-    port: cred.scm_public.port,
+    host: cred.sr_public.host,
+    user: cred.sr_public.user,
+    password: cred.sr_public.pass,
+    database: cred.sr_public.db,
+    port: cred.sr_public.port,
     dateStrings: true,
     multipleStatements: true,
     waitForConnections: true,

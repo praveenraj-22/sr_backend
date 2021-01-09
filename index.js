@@ -17,5 +17,9 @@ app.post('/login', modules.routes.Login)
 app.post('/api-changepassword', modules.routes.changePassword)
 app.get('/logout', modules.routes.logout)
 app.get('/api-loadgst',modules.routes.getgst)
+app.post('/api-gstinsert',modules.routes.gstinsert)
+
+app.get('/api-loadcustomer',modules.routes.getcustomer)
+app.post('/api-custinsert',modules.routes.customerinsert)
 
 app.listen(7777, () => console.log(`App listening on port 7777`))
