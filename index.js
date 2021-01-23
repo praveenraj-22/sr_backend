@@ -21,5 +21,12 @@ app.post('/api-gstinsert',modules.routes.gstinsert)
 
 app.get('/api-loadcustomer',modules.routes.getcustomer)
 app.post('/api-custinsert',modules.routes.customerinsert)
+app.post('/api-prodinsert',modules.routes.productinsert)
+app.get('/api-loadproduct',modules.routes.getproduct)
+app.get('/api-loadcustomerlist',modules.routes.loadcustomerlist)
+app.get('/api-loadproductlist',modules.routes.getproductlist)
+app.post('/api-insertprodlist',modules.routes.productionlist)
+app.get('/api-getproductlist/:custname',modules.routes.getproduct_list)
+app.post('/api-moveprod',modules.routes.move_prod)
 
 app.listen(7777, () => console.log(`App listening on port 7777`))
