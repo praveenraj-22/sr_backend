@@ -11,10 +11,11 @@ exports.mysql = require('mysql')
 exports.mysql2 = require('mysql2')
 exports.cron = require('node-cron')
 exports.uuid = require('uuid/v1')
-exports.mysql_store = require('express-mysql-session')(this.session)
+
 exports.cookie_parser = require('cookie-parser')
 
 exports.connections = require('./connection')
 exports.session_config = require('./session_config')
 exports.routes = require('./routes')
 exports.cred = require('./cred')
+
