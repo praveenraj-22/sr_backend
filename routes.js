@@ -465,7 +465,6 @@ exports.update_formula = (req, res) => {
   let for_mh = req.body.for_mh;
   let for_id = req.body.for_id;
 
-  console.log("hit in backedn");
 
   let updatequery = "UPDATE  product_master SET modal=?,product_description=?,product=?,sash_width=?,`sash_height`=?,`bead_width`=?,`bead_height`=?,`glass_size_width`=?,`glass_size_height`=?,`inter_lock_height`=?,`mullian_height`=? WHERE id=?"
 
@@ -530,7 +529,7 @@ exports.insert_qtr = (req, res) => {
   let qtr_convvalue = req.body.qtr_convvalue;
   let qtr_totalamount = '';
   let conversion = req.body.qtr_conversion;
-
+  let qtr_stadress=req.body.qtr_stadress;
 
   if (qtr_convvalue == 0) {
     console.log("lsm");
@@ -557,15 +556,25 @@ exports.insert_qtr = (req, res) => {
 
   let insertvalue = "insert into quotation_list(customer_id,reference,prod_id,qot_width,qot_height,qot_qty,qot_rate,qot_convvalue,qot_totalamount,qot_no,conversion) value(?,?,?,?,?,?,?,?,?,?,?)";
 
-  connections.sr_root.query(insertvalue, [qtr_cusname, qtr_ref, qtr_prod, qtr_width, qtr_height, qtr_qty, qtr_rate, qtr_convvalue, qtr_totalamount, qtr_no, conversion], (err, resdata) => {
-    if (err) { console.error(err); }
-    else {
-      console.log(resdata);
-      res.json({
-        datainserted: "inserted"
-      })
-    }
-  })
+    connections.sr_root.query("update customer_master set site_address= ? where id = ? ",[qtr_stadress,qtr_cusname],(err,resupdated)=>{
+      if(err) {console.error(err);}
+      else {
+
+        connections.sr_root.query(insertvalue, [qtr_cusname, qtr_ref, qtr_prod, qtr_width, qtr_height, qtr_qty, qtr_rate, qtr_convvalue, qtr_totalamount, qtr_no, conversion], (err, resdata) => {
+          if (err) { console.error(err); }
+          else {
+            console.log(resdata);
+            res.json({
+              datainserted: "inserted"
+            })
+          }
+        })
+      
+      }
+     
+    })
+
+
 
 }
 
@@ -593,6 +602,8 @@ exports.createquatation = (req, res) => {
   let cus_qty = req.body.cus_qty;
   let datta = [];
 
+
+
   let insertquery = 'insert into quotation(cus_name,cus_site,cus_address,cus_qto,cus_conn,cus_total,cus_qtrglschrge,cus_gstvalue,cus_qtrtrp,cus_netamount,cus_qty) values(?,?,?,?,?,?,?,?,?,?,?)'
   let quotupdate = "SELECT SUM(sno) as sno FROM quotation_sno";
 
@@ -601,9 +612,11 @@ exports.createquatation = (req, res) => {
       console.error(err);
     }
     else {
+      console.log(resupdate);
       connections.sr_root.query(insertquery, [cus_name, cus_site, cus_address, cus_qto, cus_conn, cus_total, cus_qtrglschrge, cus_gstvalue, cus_qtrtrp, cus_netamount, cus_qty], (err, resdata) => {
         if (err) { console.error(err); }
         else {
+          console.log(resdata);
           connections.sr_public.query(quotupdate, (err, resdata1) => {
             if (err) { console.error(err); }
             else {
