@@ -38,13 +38,15 @@ let costinglist = async (cstlist) => {
     let accessories = '', accessoriesvalue = 0, allaccessoriesvalue = 0;
     let steelw = 0,steelh = 0,steelsw = 0,steelrate = 0 ,allsteel = 0;
     let w = '', h = '', ow = '', oh = '', sw = '', sh = '', bw = '', bh = '', iw = '', ih = '', mw = '', mh = '', jw = '', jh = '', gw = '', gh = '', ww = '', wh = '',stw='',sth='';
-    let all_outerframerate = [], all_sashrate = [], all_beadrate = [], all_interlckrate = [], all_mullianrate = [], all_jdpfrate = [], all_gassrate = [], all_woolpilerate = [], all_acc = [], all_steelrate = [];
-    let sumofr = 0, sumsash = 0, sumbead = 0, suminterlock = 0, summullian = 0, sumjdpf = 0, sumgass = 0, sumwoolpile = 0, sumacc = 0, sumsteel = 0;
+    let all_outerframerate = [], all_sashrate = [], all_beadrate = [], all_interlckrate = [], all_mullianrate = [], all_jdpfrate = [], all_gassrate = [], all_woolpilerate = [], all_acc = [], all_steelrate = [],all_fabrate=[],all_labrate=[];
+    let sumofr = 0, sumsash = 0, sumbead = 0, suminterlock = 0, summullian = 0, sumjdpf = 0, sumgass = 0, sumwoolpile = 0, sumacc = 0, sumsteel = 0,sumfab=0,sumlab=0;
+    let sno=0;
     cstlist.forEach(lst => {
         brandtmpObj[lst.qlid] = {};
         formula = [];
         formulaid = {};
-        console.log(lst);
+     console.log(lst);
+
         (model = ''), (pd = ''), (product = ''), (width = ''), (height = ''),
             (outerframew = 0), (outerframeh = 0), (outerframesw = 0), (outerframerate = 0),
             (sashw = 0), (sashh = 0), (sashsw = 0), (sashrate = 0), (beadw = 0), (beadh = 0), (beadsw = 0), (beadrate = 0),
@@ -52,6 +54,7 @@ let costinglist = async (cstlist) => {
             (jdh = 0), (jdw = 0), (jdrate = 0), (jdsw = 0),
             (accessories = ''), (accessoriesvalue = 0);
 
+        
         (brandtmpObj[lst.qlid].model = lst.modal);
         (brandtmpObj[lst.qlid].pd = lst.product_description);
         (brandtmpObj[lst.qlid].product = lst.product);
@@ -81,8 +84,8 @@ let costinglist = async (cstlist) => {
         else {
             (brandtmpObj[lst.qlid].height = lst.qot_height);
         }
-        w = lst.qot_width;
-        h = lst.qot_height;
+        w = brandtmpObj[lst.qlid].width;
+        h = brandtmpObj[lst.qlid].height;
 
 
         //outer frame
@@ -152,8 +155,15 @@ let costinglist = async (cstlist) => {
             all_sashrate.push(brandtmpObj[lst.qlid].sashrate)
 
         } else {
+console.log(brandtmpObj[lst.qlid].sashw);
+console.log(brandtmpObj[lst.qlid].sashw);
+
+console.log(lst.csash_rate);
 
             (brandtmpObj[lst.qlid].sashsw = eval(((parseInt(brandtmpObj[lst.qlid].sashw) + parseInt(brandtmpObj[lst.qlid].sashh)) / 1000) * parseInt(lst.csashsw)).toFixed(2));
+           
+            console.log(" sw "+brandtmpObj[lst.qlid].sashsw);
+
             (brandtmpObj[lst.qlid].sashrate = eval((brandtmpObj[lst.qlid].sashsw) * parseInt(lst.csash_rate)).toFixed(2));
             all_sashrate.push(brandtmpObj[lst.qlid].sashrate)
         }
@@ -410,7 +420,7 @@ let costinglist = async (cstlist) => {
                 brandtmpObj[lst.qlid].steelrate = 0;
             }
 
-            
+
             all_steelrate.push(brandtmpObj[lst.qlid].steelrate)
         }
 
@@ -475,12 +485,78 @@ let costinglist = async (cstlist) => {
             return a + b;
         }, 0);
 
-        console.log(sumacc);
+        // console.log(sumacc);
 
-        console.log(brandtmpObj);
+   
+    (brandtmpObj[lst.qlid].sno = lst.serial_number);
+    // (brandtmpObj[lst.qlid].fabcost = lst.product);
+    // (brandtmpObj[lst.qlid].product = lst.product);
+
+    // fabrication
+    if((lst.cfabrication_w=='')||(lst.cfabrication_w==null)){
+        brandtmpObj[lst.qlid].fabw=0
+    }
+    else {
+        brandtmpObj[lst.qlid].fabw=lst.cfabrication_w
+    }
+
+    if((lst.cfabrication_h=='')||(lst.cfabrication_h==null)){
+        brandtmpObj[lst.qlid].fabh=0
+    }
+    else {
+        brandtmpObj[lst.qlid].fabh=lst.cfabrication_h
+    }
+    if ((lst.cfabrication_rate=='')||(lst.cfabrication_rate==null)){
+        brandtmpObj[lst.qlid].fabcost=0 
+        all_fabrate.push(brandtmpObj[lst.qlid].fabcost)
+    }
+    else {
+        (brandtmpObj[lst.qlid].fabcost= eval(parseInt(brandtmpObj[lst.qlid].fabw)+parseInt(brandtmpObj[lst.qlid].fabh))*parseInt(lst.cfabrication_rate).toFixed(2))
+        all_fabrate.push(brandtmpObj[lst.qlid].fabcost)
+    }
+   
+    let resultall_fab = all_fabrate.map(i=>Number(i));
+
+    sumfab = resultall_fab.reduce(function (a, b) {
+        return a + b;
+    }, 0);
+
+
+
+// labour
+if((lst.clabour_w=='')||(lst.clabour_w==null)){
+    brandtmpObj[lst.qlid].labw=0
+}
+else {
+    brandtmpObj[lst.qlid].labw=lst.clabour_w
+}
+
+if((lst.clabour_h=='')||(lst.clabour_h==null)){
+    brandtmpObj[lst.qlid].labh=0
+}
+else {
+    brandtmpObj[lst.qlid].labh=lst.clabour_h
+}
+if ((lst.clabour_rate=='')||(lst.clabour_rate==null)){
+    brandtmpObj[lst.qlid].labcost=0 
+    all_labrate.push(brandtmpObj[lst.qlid].labcost)
+}
+else {
+    (brandtmpObj[lst.qlid].labcost= eval(parseInt(brandtmpObj[lst.qlid].labw)+parseInt(brandtmpObj[lst.qlid].labh))*parseInt(lst.clabour_rate).toFixed(2))
+    all_labrate.push(brandtmpObj[lst.qlid].labcost)
+}
+
+//(brandtmpObj[lst.qlid].labcost= eval(parseInt(brandtmpObj[lst.qlid].labw)+parseInt(brandtmpObj[lst.qlid].labh))*parseInt(lst.clabour_rate).toFixed(2))
+
+let resultall_lab = all_labrate.map(i=>Number(i));
+
+sumlab = resultall_lab.reduce(function (a, b) {
+    return a + b;
+}, 0);
+
 
     })
-
+ // console.log(brandtmpObj);
     return {
         costing: brandtmpObj,
         allouterframerate: sumofr,
@@ -491,7 +567,9 @@ let costinglist = async (cstlist) => {
         alljdrate: sumjdpf,
         allgasscutrate: sumgass,
         allwoolprate: sumwoolpile,
-        allsteel: sumsteel
+        allsteel: sumsteel,
+        allfab:sumfab,
+        alllab:sumlab
     }
 
 }

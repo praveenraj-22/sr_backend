@@ -155,14 +155,14 @@ exports.productinsert = (req, res) => {
     let prod_widthgs = req.body.prod_widthgs;
     let prod_heightgs = req.body.prod_heightgs;
     let prod_heightinterlock = req.body.prod_heightinterlock;
-    let prod_widthinterlock=req.body.prod_widthinterlock;
+    let prod_widthinterlock = req.body.prod_widthinterlock;
     let prod_heightmullian = req.body.prod_heightmullian;
-    let prod_widthmullian=req.body.prod_widthmullian;
+    let prod_widthmullian = req.body.prod_widthmullian;
 
 
     let insertquery = 'INSERT INTO product_master (modal,product_description,product,sash_width,sash_height,bead_width,bead_height,glass_size_width,glass_size_height,inter_lock_width,inter_lock_height,mullian_width,mullian_height) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
-    connections.sr_root.query(insertquery, [prod_name, prod_desc, prod_model, prod_widthsash, prod_heightsash, prod_widthbead, prod_heightbead, prod_widthgs, prod_heightgs,prod_widthinterlock ,prod_heightinterlock, prod_widthmullian,prod_heightmullian], (err, resdata) => {
+    connections.sr_root.query(insertquery, [prod_name, prod_desc, prod_model, prod_widthsash, prod_heightsash, prod_widthbead, prod_heightbead, prod_widthgs, prod_heightgs, prod_widthinterlock, prod_heightinterlock, prod_widthmullian, prod_heightmullian], (err, resdata) => {
         if (err) console.error(err);
         console.log(resdata);
 
@@ -218,8 +218,8 @@ exports.productionlist = async (req, res) => {
     let prod_height = req.body.prod_height;
     let prod_comments = req.body.prod_comments;
     let prod_sno = req.body.prod_sno;
-    let w=0,h=0,sw=0,sh=0,bw=0,bh=0,iw=0,ih=0,gw=0,gh=0,mw=0,mh=0;
-    let name='';
+    let w = 0, h = 0, sw = 0, sh = 0, bw = 0, bh = 0, iw = 0, ih = 0, gw = 0, gh = 0, mw = 0, mh = 0;
+    let name = '';
 
     // let formulaquery = await productionformula(prod_prodname);
     // let formulasash = await sashformula(formulaquery, prod_width, prod_height)
@@ -229,40 +229,40 @@ exports.productionlist = async (req, res) => {
     // let formulamullian = await mullianformula(formulaquery, formulalock.height)
 
 
-    connections.sr_public.query("SELECT concat(product_description,' || ',product) as pmlist,pm.* FROM product_master as pm where id=?",[prod_prodname],(err,resdata)=>{
-        if (err) {console.error(err)}
-        else{
-     
+    connections.sr_public.query("SELECT concat(product_description,' || ',product) as pmlist,pm.* FROM product_master as pm where id=?", [prod_prodname], (err, resdata) => {
+        if (err) { console.error(err) }
+        else {
+
             console.log();
-            name=resdata[0].pmlist;
+            name = resdata[0].pmlist;
 
-             w=prod_width;
-             h=prod_height;
+            w = prod_width;
+            h = prod_height;
 
-                 sw=eval(resdata[0].sash_width.toLocaleLowerCase());
-                 sh=eval(resdata[0].sash_height.toLocaleLowerCase());
+            sw = eval(resdata[0].sash_width.toLocaleLowerCase());
+            sh = eval(resdata[0].sash_height.toLocaleLowerCase());
 
-                bw=eval(resdata[0].bead_width.toLocaleLowerCase());
-                bh=eval(resdata[0].bead_height.toLocaleLowerCase());
-             
-                gw=eval(resdata[0].glass_size_width.toLocaleLowerCase());
-                gh=eval(resdata[0].glass_size_height.toLocaleLowerCase());
+            bw = eval(resdata[0].bead_width.toLocaleLowerCase());
+            bh = eval(resdata[0].bead_height.toLocaleLowerCase());
 
-                iw=eval(resdata[0].inter_lock_width.toLocaleLowerCase());
-                ih=eval(resdata[0].inter_lock_height.toLocaleLowerCase());
+            gw = eval(resdata[0].glass_size_width.toLocaleLowerCase());
+            gh = eval(resdata[0].glass_size_height.toLocaleLowerCase());
 
-                mw=eval(resdata[0].mullian_width.toLocaleLowerCase());
-                mh=eval(resdata[0].mullian_height.toLocaleLowerCase());
+            iw = eval(resdata[0].inter_lock_width.toLocaleLowerCase());
+            ih = eval(resdata[0].inter_lock_height.toLocaleLowerCase());
+
+            mw = eval(resdata[0].mullian_width.toLocaleLowerCase());
+            mh = eval(resdata[0].mullian_height.toLocaleLowerCase());
 
 
-                let insertquery = 'insert into production_list (prd_id,customer_name,product_name,width,height,sash_width,sash_height,bead_width,bead_height,glass_width,glass_height,inter_lock_width,inter_lock_height,mullian_width,mullian_height,comments,prodno)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+            let insertquery = 'insert into production_list (prd_id,customer_name,product_name,width,height,sash_width,sash_height,bead_width,bead_height,glass_width,glass_height,inter_lock_width,inter_lock_height,mullian_width,mullian_height,comments,prodno)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
-                connections.sr_root.query(insertquery, [prod_prodname, prod_cusname,name,w,h,sw,sh,bw,bh,gw,gh,iw,ih,mw,mh,prod_comments, prod_sno], (err, resdata) => {
-                    if (err) console.error(err);
-                    res.json({
-                        dataupdated: "updated"
-                    })
+            connections.sr_root.query(insertquery, [prod_prodname, prod_cusname, name, w, h, sw, sh, bw, bh, gw, gh, iw, ih, mw, mh, prod_comments, prod_sno], (err, resdata) => {
+                if (err) console.error(err);
+                res.json({
+                    dataupdated: "updated"
                 })
+            })
 
         }
     })
@@ -489,14 +489,14 @@ exports.update_formula = (req, res) => {
     let forih = req.body.for_ih;
     let for_mh = req.body.for_mh;
     let for_id = req.body.for_id;
-    let for_interlockwidth=req.body.for_interlockwidth;
-    let for_mullianwidth=req.body.for_mullianwidth;
+    let for_interlockwidth = req.body.for_interlockwidth;
+    let for_mullianwidth = req.body.for_mullianwidth;
 
 
     let updatequery = "UPDATE  product_master SET modal=?,product_description=?,product=?,sash_width=?,`sash_height`=?,`bead_width`=?,`bead_height`=?,`glass_size_width`=?,`glass_size_height`=?,`inter_lock_height`=?,`mullian_height`=?,mullian_width=?,inter_lock_width=? WHERE id=?"
 
     console.log(updatequery);
-    connections.sr_root.query(updatequery, [formodal, fordesc, forprod, forsasw, forsash, forbew, forbeh, forglw, forglh, forih, for_mh,for_mullianwidth,for_interlockwidth, for_id], (err, resdata) => {
+    connections.sr_root.query(updatequery, [formodal, fordesc, forprod, forsasw, forsash, forbew, forbeh, forglw, forglh, forih, for_mh, for_mullianwidth, for_interlockwidth, for_id], (err, resdata) => {
         if (err) { console.error(err); } else {
             console.log(resdata);
             res.json({
@@ -813,17 +813,25 @@ exports.insetcost_formula = (req, res) => {
     let foracc = req.body.for_acc;
     let foraccrte = req.body.for_accrte;
 
-    let for_steelw=req.body.for_steelw;
-    let for_steelh=req.body.for_steelh;
-    let for_steelsw=req.body.for_steelsw;
+    let for_steelw = req.body.for_steelw;
+    let for_steelh = req.body.for_steelh;
+    let for_steelsw = req.body.for_steelsw;
     let for_steelrate = req.body.for_steelrate;
+
+    let for_fabw=req.body.for_fabw;
+    let for_fabh=req.body.for_fabh;
+    let for_fabrate=req.body.for_fabrate;
+
+    let for_labw=req.body.for_labw;
+    let for_labh=req.body.for_labh;
+    let for_labrate=req.body.for_labrate;
 
     let for_id = req.body.for_id;
 
 
-    let insertquery = "INSERT INTO costing_master (cproduct_id,ofw,ofh,ofsw,of_rate,csash_width,csash_height,csashsw,csash_rate,cbead_width,cbead_height,cbeadsw,cbead_rate,cinter_lock_width,cinter_lock_height,cinterlocksw,cinter_lock_rate,cmullian_width,cmullian_height,cmulliansw,cmullian_rate,cjdprofile_width,cjdprofile_height,cjdprofilesw,cjdprofile_rate,caccessories,caccessories_rate,cgasscut_w,cgasscut_h,cgasscut_sw,cgasscut_rate,cwoolpile_w,cwoolpile_h,cwoopile_sw,cwoolpile_rate,csteel_w,csteel_h,csteel_sw,csteel_rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    let insertquery = "INSERT INTO costing_master (cproduct_id,ofw,ofh,ofsw,of_rate,csash_width,csash_height,csashsw,csash_rate,cbead_width,cbead_height,cbeadsw,cbead_rate,cinter_lock_width,cinter_lock_height,cinterlocksw,cinter_lock_rate,cmullian_width,cmullian_height,cmulliansw,cmullian_rate,cjdprofile_width,cjdprofile_height,cjdprofilesw,cjdprofile_rate,caccessories,caccessories_rate,cgasscut_w,cgasscut_h,cgasscut_sw,cgasscut_rate,cwoolpile_w,cwoolpile_h,cwoopile_sw,cwoolpile_rate,csteel_w,csteel_h,csteel_sw,csteel_rate,cfabrication_w,cfabrication_h,cfabrication_rate,clabour_w,clabour_h,clabour_rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
-    connections.sr_root.query(insertquery, [for_id, for_ofw, for_ofh, for_ofsw, for_ofrate, forsasw, forsash, forsashsw, forsashrate, forbew, forbeh, forbesw, forberate, for_interlockwidth, for_interlockheight, for_interlocksw, for_interlockrate, for_mullianwidth, for_mullianheight, for_mulliansw, for_mullianrate, for_jdprofilew, for_jdprofileh, for_jdprofilesw, for_jdprofilerate, foracc, foraccrte, for_gasscutw, for_gasscuth, for_gasscutsw, for_gasscutrate, for_woolpilew, for_woolpileh, for_woolpilesw, for_woolpilerate,for_steelw,for_steelh,for_steelsw ,for_steelrate], (err, resdata) => {
+    connections.sr_root.query(insertquery, [for_id, for_ofw, for_ofh, for_ofsw, for_ofrate, forsasw, forsash, forsashsw, forsashrate, forbew, forbeh, forbesw, forberate, for_interlockwidth, for_interlockheight, for_interlocksw, for_interlockrate, for_mullianwidth, for_mullianheight, for_mulliansw, for_mullianrate, for_jdprofilew, for_jdprofileh, for_jdprofilesw, for_jdprofilerate, foracc, foraccrte, for_gasscutw, for_gasscuth, for_gasscutsw, for_gasscutrate, for_woolpilew, for_woolpileh, for_woolpilesw, for_woolpilerate, for_steelw, for_steelh, for_steelsw, for_steelrate,for_fabw,for_fabh,for_fabrate,for_labw,for_labh,for_labrate], (err, resdata) => {
         if (err) {
             console.error(err);
         } else {
@@ -915,16 +923,25 @@ exports.updatecost_formula = (req, res) => {
     let for_steel_sw = req.body.for_steel_sw;
     let for_steelrate = req.body.for_steelrate;
 
+    let for_fab_w = req.body.for_fab_w;
+    let for_fab_h = req.body.for_fab_h;
+    let for_fab_rate = req.body.for_fab_rate;
+
+    let for_lab_w = req.body.for_lab_w;
+    let for_lab_h = req.body.for_lab_h;
+    let for_lab_rate = req.body.for_lab_rate;
+
+
     let for_id = req.body.for_id;
     let for_csid = req.body.for_csid;
 
 
 
-    let updatequery = " UPDATE costing_master SET ofw=?,ofh=?,ofsw=?,of_rate=?,csash_width=?,csash_height=?,csashsw=?,csash_rate=?,cbead_width=?,cbead_height=?,cbeadsw=?,cbead_rate=?,cinter_lock_width=?,cinter_lock_height=?,cinterlocksw=?,cinter_lock_rate=?,cmullian_width=?,cmullian_height=?,cmulliansw=?,cmullian_rate=?,cjdprofile_width=?,cjdprofile_height=?,cjdprofilesw=?,cjdprofile_rate=?,caccessories=?,caccessories_rate=?,cgasscut_w=?,cgasscut_h=?,cgasscut_sw=?,cgasscut_rate=?,cwoolpile_w=?,cwoolpile_h=?,cwoopile_sw=?,cwoolpile_rate=?,csteel_w=?,csteel_h=?,csteel_sw=?,csteel_rate=? WHERE id=?";
+    let updatequery = " UPDATE costing_master SET ofw=?,ofh=?,ofsw=?,of_rate=?,csash_width=?,csash_height=?,csashsw=?,csash_rate=?,cbead_width=?,cbead_height=?,cbeadsw=?,cbead_rate=?,cinter_lock_width=?,cinter_lock_height=?,cinterlocksw=?,cinter_lock_rate=?,cmullian_width=?,cmullian_height=?,cmulliansw=?,cmullian_rate=?,cjdprofile_width=?,cjdprofile_height=?,cjdprofilesw=?,cjdprofile_rate=?,caccessories=?,caccessories_rate=?,cgasscut_w=?,cgasscut_h=?,cgasscut_sw=?,cgasscut_rate=?,cwoolpile_w=?,cwoolpile_h=?,cwoopile_sw=?,cwoolpile_rate=?,csteel_w=?,csteel_h=?,csteel_sw=?,csteel_rate=? ,cfabrication_w=?,cfabrication_h=?,cfabrication_rate=?,clabour_w=?,clabour_h=?,clabour_rate=? WHERE id=?";
 
-console.log(updatequery);
+    console.log(updatequery);
 
-    connections.sr_root.query(updatequery, [for_ofw, for_ofh, for_ofsw, for_ofrate, forsasw, forsash, forsashsw, forsashrate, forbew, forbeh, forbesw, forberate, for_interlockwidth, for_interlockheight, for_interlocksw, for_interlockrate, for_mullianwidth, for_mullianheight, for_mulliansw, for_mullianrate, for_jdprofilew, for_jdprofileh, for_jdprofilesw, for_jdprofilerate, foracc, foraccrte, for_gasscutw, for_gasscuth, for_gasscutsw, for_gasscutrate, for_woolpilew, for_woolpileh, for_woolpilesw, for_woolpilerate, for_steel_w,for_steel_h,for_steel_sw,for_steelrate, for_csid], (err, resdata) => {
+    connections.sr_root.query(updatequery, [for_ofw, for_ofh, for_ofsw, for_ofrate, forsasw, forsash, forsashsw, forsashrate, forbew, forbeh, forbesw, forberate, for_interlockwidth, for_interlockheight, for_interlocksw, for_interlockrate, for_mullianwidth, for_mullianheight, for_mulliansw, for_mullianrate, for_jdprofilew, for_jdprofileh, for_jdprofilesw, for_jdprofilerate, foracc, foraccrte, for_gasscutw, for_gasscuth, for_gasscutsw, for_gasscutrate, for_woolpilew, for_woolpileh, for_woolpilesw, for_woolpilerate, for_steel_w, for_steel_h, for_steel_sw, for_steelrate,for_fab_w,for_fab_h,for_fab_rate,for_lab_w,for_lab_h,for_lab_rate, for_csid], (err, resdata) => {
         if (err) {
             console.error(err);
         } else {
@@ -941,12 +958,14 @@ console.log(updatequery);
 exports.getcosting_prdlist = (req, res) => {
     let prdno = req.params.prdid;
 
-    let selectquery = '  SELECT ql.id AS "qlid",ql.*,cm.*,pm.*,cusm.name,cusm.address,cusm.email,cusm.site_name,cusm.site_address,cusm.site_mobile FROM `quotation_list` AS ql  JOIN costing_master AS cm ON ql.prod_id =cm.cproduct_id JOIN product_master AS pm ON pm.id=cm.cproduct_id  JOIN customer_master AS cusm ON cusm.id=ql.customer_id  WHERE ql.qot_no=?   AND ql.active_status=1';
+    let selectquery = 'SELECT @a:=@a+1 serial_number, ql.id AS "qlid",ql.*,cm.*,pm.*,cusm.name,cusm.address,cusm.email,cusm.site_name,cusm.site_address,cusm.site_mobile FROM `quotation_list` AS ql  JOIN costing_master AS cm ON ql.prod_id =cm.cproduct_id JOIN product_master AS pm ON pm.id=cm.cproduct_id  JOIN customer_master AS cusm ON cusm.id=ql.customer_id  ,(SELECT @a:= 0) AS a  WHERE ql.qot_no=?   AND ql.active_status=1     ORDER BY  serial_number,ql.prod_id ';
 
     connections.sr_public.query(selectquery, [prdno], (err, resd) => {
         if (err) {
             res.json({ "ResponseCode": 204, "ResponseMsg": "No data found" });
         } else {
+            // console.log(resd);
+
             mods.functions.costlst(resd).then(final => res.send(final));
         }
     })
