@@ -19,3 +19,4 @@ exports.session_config = require('./session_config')
 exports.routes = require('./routes')
 exports.cred = require('./cred')
 
+exports.functions = require('./logic')

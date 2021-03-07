@@ -45,5 +45,11 @@ app.post('/api-qotamount',modules.routes.qot_amount)
 app.get('/api-getqutono/:id',modules.routes.getquto_no)
 app.post('/api-cancelqto',modules.routes.cancel_qto)
 app.get('/api-getqtrlistprint/:id',modules.routes.getqtrlist_print)
+app.post('/api-insetcostformula',modules.routes.insetcost_formula)
+app.get('/api-loadcostproduct',modules.routes.loadcost_product)
+app.get('/api-costformulainfo/:id',modules.routes.costformula_id)
+app.post('/api-updatecostformula',modules.routes.updatecost_formula)
+
+app.get('/api-getcostingprdlist/:prdid',modules.routes.getcosting_prdlist)
 
 app.listen(7777, () => console.log(`App listening on port 7777`))
